@@ -4,6 +4,7 @@
 --
 DROP TABLE Uzivatel CASCADE CONSTRAINTS;
 DROP TABLE Konverzace CASCADE CONSTRAINTS;
+DROP TABLE Zprava CASCADE CONSTRAINTS;
 DROP TABLE Prispevek CASCADE CONSTRAINTS;
 DROP TABLE Akce CASCADE CONSTRAINTS;
 DROP TABLE Alba CASCADE CONSTRAINTS;
@@ -11,17 +12,17 @@ DROP TABLE Fotky CASCADE CONSTRAINTS;
 DROP TABLE Videa CASCADE CONSTRAINTS;
 
 CREATE TABLE Uzivatel (
-    id_uzivatel INTEGER AUTO_INCREMENT=5000, -- create generated primary key
+    id_uzivatel INTEGER, -- create generated primary key
     jmeno VARCHAR(20) NOT NULL,
     prijmeni VARCHAR(20) NOT NULL,
     datum_narozeni DATE NOT NULL,
-    pohlavi ENUM('muz', 'zena'),
-    ulice VARCHAR(20)
+    pohlavi CHAR(4),   --muz/zena
+    ulice VARCHAR(20),
     mesto VARCHAR(20),
     zamestnani VARCHAR(30),
     mail VARCHAR(30) NOT NULL,
     skola VARCHAR(30),
-    vztah BOOLEAN   --> BOOL true-in relationship/false-single
+    vztah CHAR(1)   --> BOOL Y-in relationship/N-single
 );
 
 CREATE TABLE Konverzace (
@@ -33,42 +34,42 @@ CREATE TABLE Konverzace (
 CREATE TABLE Zprava (
     poradi_zpravy INTEGER,  -- Foreign Key
     obsah VARCHAR(255),
-    datum DATETIME, -- time included
+    datum TIMESTAMP, -- time included
     misto VARCHAR(20)
 );
 
 CREATE TABLE Prispevek (
     id_prispevek INTEGER,
-    datum DATETIME,
+    datum DATE,
     misto VARCHAR(20),
     nadpis VARCHAR(40) NOT NULL,
-    popis TEXT(127)
+    popis VARCHAR(3071)
 );
 
 CREATE TABLE Akce (
     id_akce INTEGER,
     nazev VARCHAR(50) NOT NULL,
-    datum DATETIME NOT NULL,
+    datum DATE NOT NULL,
     misto VARCHAR(20),
-    typ_udalosti ENUM('virtualni', 'fyzicka')
+    typ_udalosti VARCHAR(10) CHECK( typ_udalosti IN ('fyzicka', 'virtualni'))
 );
 
 CREATE TABLE Alba (
     id_alba INTEGER,
     nazev VARCHAR(40) NOT NULL,
-    nastaveni_soukromi BOOLEAN, --> BOOL true-public / false-private
+    nastaveni_soukromi CHAR(1), --> BOOL Y-public / N-private
     popis VARCHAR(255)
 );
 
 -- INHERITANCE information-src: https://www.sql.org/sql-database/postgresql/manual/tutorial-inheritance.html
 CREATE TABLE Fotky (
-    panorama BOOLEAN,   -- true-yes/false-no
+    panorama CHAR(1),   -- Y/N
     pomer_stran DECIMAL(4,2)
 ) INHERITS (Alba);
 
 CREATE TABLE Videa (
-    delka TIME,
-    kvalita ENUM(360, 480, 720, 1080),
+    delka TIMESTAMP,
+    kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
     FPS INTEGER
 ) INHERITS (Alba);
 
@@ -91,6 +92,6 @@ ALTER TABLE Alba
 
 -- Priklad naplneni tabulky daty
 INSERT INTO Alba
-    VALUES(42,'Dovolena Izreal',TRUE,'Dovolena super!');
+    VALUES(42,'Dovolena Izreal','Y','Dovolena super!');
 INSERT INTO Alba
-    VALUES(43,'Narozeniny Pepa',FALSE,'Syn 3 roky');
+    VALUES(43,'Narozeniny Pepa','N','Syn 3 roky');

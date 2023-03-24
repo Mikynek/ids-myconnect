@@ -45,7 +45,7 @@ CREATE TABLE Akce (
     nazev VARCHAR(50) NOT NULL,
     datum DATE NOT NULL,
     misto VARCHAR(20),
-    typ_udalosti VARCHAR(10) CHECK( typ_udalosti IN ('fyzicka', 'virtualni'))   
+    typ_udalosti VARCHAR(10) CHECK(typ_udalosti IN ('fyzicka', 'virtualni'))   
 );
 
 CREATE TABLE Alba (

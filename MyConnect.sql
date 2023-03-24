@@ -1,10 +1,10 @@
-DROP TABLE Uzivatel CASCADE CONSTRAINTS;
-DROP TABLE Konverzace CASCADE CONSTRAINTS;
-DROP TABLE Prispevek CASCADE CONSTRAINTS;
-DROP TABLE Akce CASCADE CONSTRAINTS;
-DROP TABLE Alba CASCADE CONSTRAINTS;
-DROP TABLE Fotky CASCADE CONSTRAINTS;
-DROP TABLE Videa CASCADE CONSTRAINTS;
+-- DROP TABLE Uzivatel CASCADE CONSTRAINTS;
+-- DROP TABLE Konverzace CASCADE CONSTRAINTS;
+-- DROP TABLE Prispevek CASCADE CONSTRAINTS;
+-- DROP TABLE Akce CASCADE CONSTRAINTS;
+-- DROP TABLE Alba CASCADE CONSTRAINTS;
+-- DROP TABLE Fotky CASCADE CONSTRAINTS;
+-- DROP TABLE Videa CASCADE CONSTRAINTS;
 
 CREATE TABLE Uzivatel (
     id_uzivatel INTEGER AUTO_INCREMENT=5000, -- create generated primary key
@@ -41,32 +41,32 @@ CREATE TABLE Prispevek (
     popis TEXT(127)
 );
 
-CREATE TABLE Akce {
+CREATE TABLE Akce (
     id_akce INTEGER,
     nazev VARCHAR(50) NOT NULL,
     datum DATETIME NOT NULL,
     misto VARCHAR(20),
     typ_udalosti ENUM('virtualni', 'fyzicka')
-}
+);
 
-CREATE TABLE Alba {
+CREATE TABLE Alba (
     id_alba INTEGER,
     nazev VARCHAR(40) NOT NULL,
     nastaveni_soukromi BOOLEAN, --> BOOL true-public / false-private
-    popis TINYTEXT  -- maximum lenght of 255 characters
-}
+    popis VARCHAR(255)
+);
 
 -- INHERITANCE information-src: https://www.sql.org/sql-database/postgresql/manual/tutorial-inheritance.html
-CREATE TABLE Fotky {
+CREATE TABLE Fotky (
     panorama BOOLEAN,   -- true-yes/false-no
     pomer_stran DECIMAL(4,2)
-} INHERITS (Alba);
+) INHERITS (Alba);
 
-CREATE TABLE Videa {
+CREATE TABLE Videa (
     delka TIME,
     kvalita ENUM(360, 480, 720, 1080),
     FPS INTEGER
-} INHERITS (Alba);
+) INHERITS (Alba);
 
 
 ALTER TABLE Uzivatel 

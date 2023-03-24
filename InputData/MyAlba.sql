@@ -4,26 +4,6 @@ INSERT INTO ALBA (
     NAZEV,
     NASTAVENI_SOUKROMI,
     POPIS
-)VALUES(
-    'Narozeniny Pepa',
-    'N',
-    'Syn 3 roky'
-);
-
-INSERT INTO ALBA (
-    NAZEV,
-    NASTAVENI_SOUKROMI,
-    POPIS
-) VALUES(
-    'Dovolena Izreal',
-    'Y',
-    'Dovolena super!'
-);
-
-INSERT INTO ALBA (
-    NAZEV,
-    NASTAVENI_SOUKROMI,
-    POPIS
 ) VALUES(
     'Summer Music Festival',
     'Y',
@@ -87,7 +67,7 @@ INSERT INTO ALBA (
 ) VALUES(
     'Film Festival',
     'N',
-    'A week-long celebration of independent and foreign films, with screenings and Q&A sessions with directors and actors.'
+    'A week-long celebration of independent and foreign films, with screenings and QaA sessions with directors and actors.'
 );
 
 INSERT INTO ALBA (

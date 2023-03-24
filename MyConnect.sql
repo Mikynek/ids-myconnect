@@ -28,6 +28,7 @@ CREATE TABLE Uzivatel (
 CREATE TABLE Konverzace (
     id_konverzace INTEGER,
     nazev VARCHAR(20) NOT NULL,
+    poradi_zpravy INTEGER,  -- Foreign Key
     seznam_clenu VARCHAR(40)    -- switch for VARBINARY(size) ?
 );
 
@@ -79,9 +80,11 @@ ALTER TABLE Uzivatel
 ALTER TABLE Konverzace 
     ADD CONSTRAINT PK_konverzace PRIMARY KEY (id_konverzace);
 -- FOREIGN KEY Zprava
+ALTER TABLE Zprava
+    ADD CONSTRAINT PK_zpravy PRIMARY KEY (poradi_zpravy);
 ALTER TABLE Konverzace
-    ADD CONSTRAINT FK_zprava
-    FOREIGN KEY (poradi_zpravy) REFERENCES Zprava(poradi_zpravy) ON DELETE CASCADE;
+    ADD CONSTRAINT FK_zprava_konverzace
+    FOREIGN KEY (poradi_zpravy) REFERENCES Zprava ON DELETE CASCADE;
 ALTER TABLE Prispevek
     ADD CONSTRAINT PK_prispevek PRIMARY KEY (id_prispevek);
 ALTER TABLE Akce

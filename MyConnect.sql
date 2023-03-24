@@ -40,14 +40,6 @@ CREATE TABLE Zprava (
     misto VARCHAR(20)
 );
 
-CREATE TABLE Prispevek (
-    id_prispevek NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    datum DATE,
-    misto VARCHAR(20),
-    nadpis VARCHAR(40) NOT NULL,
-    popis VARCHAR(3071)
-);
-
 CREATE TABLE Akce (
     id_akce NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nazev VARCHAR(50) NOT NULL,
@@ -63,15 +55,29 @@ CREATE TABLE Alba (
     popis VARCHAR(255)
 );
 
--- INHERITANCE information-src: https://www.sql.org/sql-database/postgresql/manual/tutorial-inheritance.html
-CREATE TABLE Fotky OF Prispevek (
-    panorama CHAR(1) CHECK (panorama IN ('Y', 'N')),
-    pomer_stran NUMBER(4,2)
+CREATE TABLE Prispevek (
+    id_prispevek NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    datum DATE,
+    misto VARCHAR(20),
+    nadpis VARCHAR(40) NOT NULL,
+    popis VARCHAR(3071)
 );
 
-CREATE TABLE Videa OF Prispevek (
+CREATE TABLE Fotky (
+    id_fotky NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    panorama CHAR(1) CHECK (panorama IN ('Y', 'N')),
+    pomer_stran DECIMAL(4,2),
+    id_prispevek NUMBER,
+    FOREIGN KEY (id_prispevek) REFERENCES Prispevek(id_prispevek)
+);
+
+
+CREATE TABLE Videa (
+    id_videa NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     delka TIMESTAMP,
     kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
-    FPS INTEGER
+    FPS INTEGER,
+    id_prispevek NUMBER,
+    FOREIGN KEY (id_prispevek) REFERENCES Prispevek(id_prispevek)
 );
 

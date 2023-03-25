@@ -97,3 +97,51 @@ INSERT INTO KONVERZACE (
     10,
     'JKLMNOP'
 );
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Vacation plans',
+    1
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Project discussion',
+    2
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Music recommendations',
+    3
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Movie night ideas',
+    1
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Recipe sharing',
+    2
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Fitness motivation',
+    3
+);

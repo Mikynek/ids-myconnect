@@ -1,0 +1,53 @@
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Chat s kamarádem',
+    2
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Rodinná schůzka',
+    3
+);
+
+INSERT INTO KONVERZACE (
+    NAZEV,
+    ID_UZIVATEL
+) VALUES (
+    'Výlet s partou',
+    1
+);
+
+INSERT INTO PRITELSTVI (
+    ZACATEK,
+    UZIVATEL_ID,
+    PRITEL_ID
+) VALUES (
+    SYSDATE,
+    1,
+    2
+);
+
+INSERT INTO PRITELSTVI (
+    ZACATEK,
+    UZIVATEL_ID,
+    PRITEL_ID
+) VALUES (
+    SYSDATE,
+    1,
+    3
+);
+
+INSERT INTO PRITELSTVI (
+    ZACATEK,
+    UZIVATEL_ID,
+    PRITEL_ID
+) VALUES (
+    SYSDATE,
+    2,
+    3
+);

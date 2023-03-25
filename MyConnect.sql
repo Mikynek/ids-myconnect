@@ -43,10 +43,10 @@ CREATE TABLE Konverzace (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nazev VARCHAR(20) NOT NULL,
     id_uzivatel INTEGER NOT NULL, --author
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id)
 );
 
-CREATE TABLE Konverzace_ucastnici ( -- unary  
+CREATE TABLE Konverzace_ucastnici (
     zacatek TIMESTAMP,
     uzivatel_id INTEGER NOT NULL,
     konverzace_id INTEGER NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE Zprava (
     obsah VARCHAR(255) NOT NULL,
     datum TIMESTAMP NOT NULL, -- time included
     id_uzivatel INTEGER NOT NULL,
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id), -- Change user, when deleting user to <DELETED USER>
     id_konverzace INTEGER NOT NULL,
     FOREIGN KEY (id_konverzace) REFERENCES Konverzace(id) ON DELETE CASCADE
 );
@@ -129,11 +129,11 @@ CREATE TABLE Videa (
     id_prispevek INTEGER,
     FOREIGN KEY (id_prispevek) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
     id_alba INTEGER,
-    FOREIGN KEY (id_alba) REFERENCES Alba(id) 
+    FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
 
 -- ADD possible cover photo, after table Fotky is created
 ALTER TABLE Alba ADD (
     id_fotky INTEGER,
-    CONSTRAINT fk_fotky_id_fotky FOREIGN KEY (id_fotky) REFERENCES Fotky(id)
+    CONSTRAINT id_fotky FOREIGN KEY (id_fotky) REFERENCES Fotky(id)
 );

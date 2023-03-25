@@ -111,12 +111,14 @@ CREATE TABLE Prispevek_zminil (
     FOREIGN KEY (prispevek_id) REFERENCES Prispevek(id) ON DELETE CASCADE
 );
 
+-- Fotky and Videa are specialization of Prispevek table.
+-- Fotky/Videa have additional attributes specific the represented entity.
+-- Specialization is done by Prispevek's id. The ID is also used to represent the Fotky/Videa entity.
 CREATE TABLE Fotky (
-    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     panorama CHAR(8) CHECK (panorama IN ('Y', 'N')),
     pomer_stran DECIMAL(4,2),
-    id_prispevek INTEGER,
-    FOREIGN KEY (id_prispevek) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
+    id INTEGER,
+    FOREIGN KEY (id) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
     id_alba INTEGER,
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
@@ -126,8 +128,8 @@ CREATE TABLE Videa (
     kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
     delka TIMESTAMP,
     FPS INTEGER,
-    id_prispevek INTEGER,
-    FOREIGN KEY (id_prispevek) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
+    id INTEGER,
+    FOREIGN KEY (id) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
     id_alba INTEGER,
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
@@ -241,19 +243,19 @@ INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
 VALUES (3, 2);
 
 -- Tabulka Fotky
-INSERT INTO Fotky (panorama, pomer_stran, id_prispevek, id_alba)
+INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
 VALUES ('N', 1.5, NULL, 1);
-INSERT INTO Fotky (panorama, pomer_stran, id_prispevek, id_alba)
+INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
 VALUES ('N', 1.33, NULL, 2);
-INSERT INTO Fotky (panorama, pomer_stran, id_prispevek, id_alba)
+INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
 VALUES ('Y', 2.5, NULL, 2);
 
 -- Tabulka Videa
-INSERT INTO Videa (kvalita, delka, FPS, id_prispevek, id_alba)
+INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
 VALUES (1080, TO_DATE('01:15:00', 'HH24:MI:SS'), 60, NULL, 1);
-INSERT INTO Videa (kvalita, delka, FPS, id_prispevek, id_alba)
+INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
 VALUES (720, TO_DATE('00:45:00', 'HH24:MI:SS'), 30, NULL, 2);
-INSERT INTO Videa (kvalita, delka, FPS, id_prispevek, id_alba)
+INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
 VALUES (480, TO_DATE('00:30:00', 'HH24:MI:SS'), 30, 1, NULL);
 
 UPDATE Alba SET id_fotky = 1 WHERE id = 1;

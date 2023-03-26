@@ -134,12 +134,6 @@ CREATE TABLE Videa (
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
 
--- ADD possible cover photo, after table Fotky is created
-ALTER TABLE Alba ADD (
-    id_fotky INTEGER,
-    CONSTRAINT id_fotky FOREIGN KEY (id_fotky) REFERENCES Fotky(id)
-);
-
 -- Fill Tables with Example Data
 
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
@@ -257,9 +251,6 @@ INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
 VALUES (720, TO_DATE('00:45:00', 'HH24:MI:SS'), 30, NULL, 2);
 INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
 VALUES (480, TO_DATE('00:30:00', 'HH24:MI:SS'), 30, 1, NULL);
-
-UPDATE Alba SET id_fotky = 1 WHERE id = 1;
-UPDATE Alba SET id_fotky = 3 WHERE id = 2;
 
 -- Select Test
 SELECT * FROM Uzivatel;

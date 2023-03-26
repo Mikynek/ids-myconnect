@@ -235,11 +235,11 @@ VALUES (3, 2);
 
 -- Fotky
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('N', 1.5, NULL, 1);
+VALUES ('N', 1.5, 1, 2);
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('N', 1.33, NULL, 2);
+VALUES ('N', 1.33, 2, 1);
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('Y', 2.5, NULL, 2);
+VALUES ('Y', 2.5, 2, 2);
 
 -- Videa
 INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)

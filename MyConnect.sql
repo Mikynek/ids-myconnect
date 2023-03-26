@@ -31,7 +31,7 @@ CREATE TABLE Uzivatel (
 );
 
 CREATE TABLE Pratelstvi ( -- unary  
-    zacatek TIMESTAMP,
+    zacatek TIMESTAMP DEFAULT SYSTIMESTAMP,
     uzivatel_id INTEGER NOT NULL,
     pritel_id INTEGER NOT NULL,
     PRIMARY KEY (uzivatel_id, pritel_id),
@@ -47,7 +47,7 @@ CREATE TABLE Konverzace (
 );
 
 CREATE TABLE Konverzace_ucastnici (
-    zacatek TIMESTAMP,
+    zacatek TIMESTAMP DEFAULT SYSTIMESTAMP,
     uzivatel_id INTEGER NOT NULL,
     konverzace_id INTEGER NOT NULL,
     PRIMARY KEY (uzivatel_id, konverzace_id),
@@ -58,7 +58,7 @@ CREATE TABLE Konverzace_ucastnici (
 CREATE TABLE Zprava (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
     obsah VARCHAR(255) NOT NULL,
-    datum TIMESTAMP NOT NULL,
+    odeslana TIMESTAMP  DEFAULT SYSTIMESTAMP NOT NULL,
     id_uzivatel INTEGER NOT NULL,
     FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id), -- Change user, when deleting user to <DELETED USER>
     id_konverzace INTEGER NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE Akce (
 );
 
 CREATE TABLE Akce_ucastnici (
-    zacatek TIMESTAMP,
+    zacatek TIMESTAMP DEFAULT SYSTIMESTAMP,
     uzivatel_id INTEGER NOT NULL,
     akce_id INTEGER NOT NULL,
     PRIMARY KEY (uzivatel_id, akce_id),
@@ -95,7 +95,7 @@ CREATE TABLE Alba (
 
 CREATE TABLE Prispevek (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    datum DATE,
+    datum DATE DEFAULT SYSDATE NOT NULL,
     misto VARCHAR(20),
     nadpis VARCHAR(40) NOT NULL,
     popis VARCHAR(511),
@@ -123,10 +123,9 @@ CREATE TABLE Fotky (
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE Videa (
     kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
-    delka TIMESTAMP,
+    delka_sekund NUMBER,
     FPS INTEGER,
     id INTEGER,
     FOREIGN KEY (id) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
@@ -147,14 +146,14 @@ VALUES ('johncena@example.com', 'John', 'Cena', TO_DATE('1977-04-23','YYYY-MM-DD
 
 -- Pratelstvi
 
-INSERT INTO Pratelstvi (zacatek, uzivatel_id, pritel_id)
-VALUES (TO_DATE('2022-01-01 10:00:00', 'YYYY/MM/DD HH:MI:SS'), 1, 2);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
+VALUES ( 1, 2);
 
-INSERT INTO Pratelstvi (zacatek, uzivatel_id, pritel_id)
-VALUES (TO_DATE('2022-01-01 11:00:00', 'YYYY/MM/DD HH:MI:SS'), 2, 3);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
+VALUES ( 2, 3);
 
-INSERT INTO Pratelstvi (zacatek, uzivatel_id, pritel_id)
-VALUES (TO_DATE('2022-01-01 12:00:00', 'YYYY/MM/DD HH:MI:SS'), 3, 1);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
+VALUES ( 3, 1);
 
 -- Konverzace
 
@@ -169,26 +168,26 @@ VALUES ('Testing 123', 3);
 
 -- Konverzace_ucastnici
 
-INSERT INTO Konverzace_ucastnici (zacatek, uzivatel_id, konverzace_id)
-VALUES (TO_DATE('2022-01-01 10:00:00', 'YYYY/MM/DD HH:MI:SS'), 1, 1);
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (1, 1);
 
-INSERT INTO Konverzace_ucastnici (zacatek, uzivatel_id, konverzace_id)
-VALUES (TO_DATE('2022-01-01 11:00:00', 'YYYY/MM/DD HH:MI:SS'), 2, 1);
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (2, 1);
 
-INSERT INTO Konverzace_ucastnici (zacatek, uzivatel_id, konverzace_id)
-VALUES (TO_DATE('2022-01-01 12:00:00', 'YYYY/MM/DD HH:MI:SS'), 3, 1);
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (3, 1);
 
--- Tabulka Zprava
-INSERT INTO Zprava (obsah, datum, id_uzivatel, id_konverzace)
-VALUES ('Ahoj, jak se mas?', TO_DATE('2022-01-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
-INSERT INTO Zprava (obsah, datum, id_uzivatel, id_konverzace)
-VALUES ('Nic noveho, a ty?', TO_DATE('2022-01-01 10:05:00', 'YYYY-MM-DD HH24:MI:SS'), 2, 1);
-INSERT INTO Zprava (obsah, datum, id_uzivatel, id_konverzace)
-VALUES ('Taky nic zajimaveho', TO_DATE('2022-01-01 10:10:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
-INSERT INTO Zprava (obsah, datum, id_uzivatel, id_konverzace)
-VALUES ('Tento uzivatel neexistuje', TO_DATE('2022-01-01 10:15:00', 'YYYY-MM-DD HH24:MI:SS'), 3, 1);
+-- Zprava
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Ahoj, jak se mas?', 1, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Nic noveho, a ty?', 2, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Taky nic zajimaveho', 1, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Tento uzivatel neexistuje', 3, 1);
 
--- Tabulka Akce
+-- Akce
 INSERT INTO Akce (nazev, datum, misto, typ_udalosti, id_uzivatel)
 VALUES ('Party u jezera', TO_DATE('2022-05-01', 'YYYY-MM-DD'), 'Jezero', 'F', 1);
 INSERT INTO Akce (nazev, datum, misto, typ_udalosti, id_uzivatel)
@@ -198,17 +197,17 @@ VALUES ('Stream koncert', TO_DATE('2022-04-10', 'YYYY-MM-DD'), 'Online', 'V', 1)
 INSERT INTO Akce (nazev, datum, misto, typ_udalosti, id_uzivatel)
 VALUES ('Workshop', TO_DATE('2022-03-05', 'YYYY-MM-DD'), 'Domov', 'V', 3);
 
--- Tabulka Akce_ucastnici
-INSERT INTO Akce_ucastnici (zacatek, uzivatel_id, akce_id)
-VALUES (TO_DATE('2022-05-01 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
-INSERT INTO Akce_ucastnici (zacatek, uzivatel_id, akce_id)
-VALUES (TO_DATE('2022-05-01 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 2, 1);
-INSERT INTO Akce_ucastnici (zacatek, uzivatel_id, akce_id)
-VALUES (TO_DATE('2022-02-14 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 2, 2);
-INSERT INTO Akce_ucastnici (zacatek, uzivatel_id, akce_id)
-VALUES (TO_DATE('2022-04-10 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 3);
+-- Akce_ucastnici
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
+VALUES (1, 1);
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
+VALUES (2, 1);
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
+VALUES (2, 2);
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
+VALUES (1, 3);
 
--- Tabulka Alba
+-- Alba
 INSERT INTO Alba (nazev, nastaveni_soukromi, popis, id_uzivatel)
 VALUES ('Moje dovolená 2022', 'private', 'Fotky z dovolené na Bali', 1);
 INSERT INTO Alba (nazev, nastaveni_soukromi, popis, id_uzivatel)
@@ -216,7 +215,7 @@ VALUES ('Rodinné oslavy', 'private', 'Fotky z rodinných oslav', 2);
 INSERT INTO Alba (nazev, nastaveni_soukromi, popis, id_uzivatel)
 VALUES ('Mé oblíbené restaurace', 'public', 'Fotografie z mých oblíbených restaurací', 3);
 
--- Tabulka Prispevek
+-- Prispevek
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
 VALUES (TO_DATE('2022-01-15', 'YYYY-MM-DD'), 'Praha', 'Můj výlet do Prahy', 'V Praze jsem si prohlédl staré město a navštívil několik muzeí.', 1);
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
@@ -224,7 +223,7 @@ VALUES (TO_DATE('2022-03-20', 'YYYY-MM-DD'), 'Brno', 'Návštěva v Brně', 'V B
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
 VALUES (TO_DATE('2022-05-05', 'YYYY-MM-DD'), 'Plzeň', 'Pivní festival v Plzni', 'Na pivním festivalu v Plzni jsem ochutnal mnoho druhů piva a poznal zajímavé lidi.', 3);
 
--- Tabulka Prispevek_zminil
+-- Prispevek_zminil
 INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
 VALUES (1, 1);
 INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
@@ -236,7 +235,7 @@ VALUES (2, 2);
 INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
 VALUES (3, 2);
 
--- Tabulka Fotky
+-- Fotky
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
 VALUES ('N', 1.5, NULL, 1);
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
@@ -244,13 +243,13 @@ VALUES ('N', 1.33, NULL, 2);
 INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
 VALUES ('Y', 2.5, NULL, 2);
 
--- Tabulka Videa
-INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
-VALUES (1080, TO_DATE('01:15:00', 'HH24:MI:SS'), 60, NULL, 1);
-INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
-VALUES (720, TO_DATE('00:45:00', 'HH24:MI:SS'), 30, NULL, 2);
-INSERT INTO Videa (kvalita, delka, FPS, id, id_alba)
-VALUES (480, TO_DATE('00:30:00', 'HH24:MI:SS'), 30, 1, NULL);
+-- Videa
+INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
+VALUES (1080, 123123.1, 60, 1, 1);
+INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
+VALUES (720, 18.4, 30, 2, 2);
+INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
+VALUES (480, 72.1, 30, 1, NULL);
 
 -- Select Test
 SELECT * FROM Uzivatel;

@@ -135,6 +135,7 @@ CREATE TABLE Videa (
 
 -- Fill Tables with Example Data
 
+-- Uzivatel
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
 VALUES ('johndoe@example.com', 'John', 'Doe', TO_DATE('1990-01-01','YYYY-MM-DD'), 'M', 'New York', 'Fifth Avenue', 10, 'Developer', 'MIT', 'S');
 
@@ -145,7 +146,6 @@ INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, ci
 VALUES ('johncena@example.com', 'John', 'Cena', TO_DATE('1977-04-23','YYYY-MM-DD'), 'M', 'West Newbury', 'Main Street', 15, 'Wrestler', NULL, 'Z');
 
 -- Pratelstvi
-
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
 VALUES ( 1, 2);
 
@@ -156,7 +156,6 @@ INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
 VALUES ( 3, 1);
 
 -- Konverzace
-
 INSERT INTO Konverzace (nazev, id_uzivatel)
 VALUES ('Hello world', 1);
 
@@ -167,7 +166,6 @@ INSERT INTO Konverzace (nazev, id_uzivatel)
 VALUES ('Testing 123', 3);
 
 -- Konverzace_ucastnici
-
 INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
 VALUES (1, 1);
 
@@ -252,6 +250,7 @@ INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
 VALUES (480, 72.1, 30, 1, NULL);
 
 -- Select Test
+/*
 SELECT * FROM Uzivatel;
 SELECT * FROM Pratelstvi;
 SELECT * FROM Konverzace;
@@ -264,3 +263,4 @@ SELECT * FROM Prispevek;
 SELECT * FROM Prispevek_zminil;
 SELECT * FROM Fotky;
 SELECT * FROM Videa;
+*/

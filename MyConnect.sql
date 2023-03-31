@@ -157,13 +157,13 @@ VALUES ( 3, 1);
 
 -- Konverzace
 INSERT INTO Konverzace (nazev, id_uzivatel)
-VALUES ('Hello world', 1);
+VALUES ('IDS projekt', 1);
 
 INSERT INTO Konverzace (nazev, id_uzivatel)
-VALUES ('Goodbye world', 2);
+VALUES ('Bavime se', 2);
 
 INSERT INTO Konverzace (nazev, id_uzivatel)
-VALUES ('Testing 123', 3);
+VALUES ('Fotbal', 3);
 
 -- Konverzace_ucastnici
 INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
@@ -173,7 +173,19 @@ INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
 VALUES (2, 1);
 
 INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
-VALUES (3, 1);
+VALUES (1, 2);
+
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (2, 2);
+
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (3, 2);
+
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (2, 3);
+
+INSERT INTO Konverzace_ucastnici ( uzivatel_id, konverzace_id)
+VALUES (3, 3);
 
 -- Zprava
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
@@ -184,6 +196,18 @@ INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('Taky nic zajimaveho', 1, 1);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('Tento uzivatel neexistuje', 3, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('ola, jak se mas?', 2, 2);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('olaola.. nic noveho, a ty?', 1, 2);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('olaolaola! Taky nic zajimaveho', 2, 2);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('morgen, jak se mas?', 3, 3);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('morgenmorgen.. nic noveho, a ty?', 2, 3);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('morgenmorgenmorgen! Taky nic zajimaveho', 3, 3);
 
 -- Akce
 INSERT INTO Akce (nazev, datum, misto, typ_udalosti, id_uzivatel)
@@ -249,18 +273,40 @@ VALUES (720, 18.4, 30, 2, 2);
 INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
 VALUES (480, 72.1, 30, 1, NULL);
 
--- Select Test
-/*
-SELECT * FROM Uzivatel;
-SELECT * FROM Pratelstvi;
-SELECT * FROM Konverzace;
-SELECT * FROM Konverzace_ucastnici;
-SELECT * FROM Zprava;
-SELECT * FROM Akce;
-SELECT * FROM Akce_ucastnici;
-SELECT * FROM Alba;
-SELECT * FROM Prispevek;
-SELECT * FROM Prispevek_zminil;
-SELECT * FROM Fotky;
-SELECT * FROM Videa;
-*/
+-- 2x Joinig 2 tables
+
+SELECT
+  MAIL,
+  CONCAT(CONCAT(JMENO,
+  ' '),
+  PRIJMENI)     AS JMENO,
+  NAROZENI      AS NAROZEN,
+  DATUM         AS DATUM_PUBLIKOVANI,
+  NADPIS,
+  NVL(POPIS,
+  'BEZ POPISU') AS POPIS
+FROM
+  UZIVATEL
+  JOIN PRISPEVEK
+  ON UZIVATEL.ID=PRISPEVEK.ID_UZIVATEL;
+
+SELECT
+  CONCAT(CONCAT(JMENO,
+  ' '),
+  PRIJMENI) AS JMENO_ZAKLADATELE,
+  MAIL      AS MAIL_ZAKLADATELE,
+  NAZEV     AS NAZEV_AKCE,
+  MISTO     AS MISTO_AKCE,
+  DATUM     AS DATUM_AKCE,
+  CASE
+    WHEN TYP_UDALOSTI = 'F' THEN 'FYZICKA'
+    ELSE 'VIRTUALNI'
+  END       AS TYP_AKCE
+FROM
+  UZIVATEL
+  JOIN AKCE
+  ON UZIVATEL.ID=ID_UZIVATEL
+ORDER BY
+  DATUM ASC;
+  
+-- 1x Joining 3 tables ...

@@ -310,3 +310,20 @@ ORDER BY
   DATUM ASC;
   
 -- 1x Joining 3 tables
+
+-- 1x EXIST SELECT
+-- SHOW LIST OF ATTENDERS FOR EVENT WITH ID 1
+SELECT
+    ID AS ID_UZIVATEL,
+    CONCAT(CONCAT(JMENO, ' '), PRIJMENI) AS JMENO
+FROM
+    Uzivatel
+WHERE EXISTS (
+    SELECT *
+    FROM 
+        Akce_ucastnici
+    WHERE
+        Akce_ucastnici.uzivatel_id = Uzivatel.id AND
+        Akce_ucastnici.akce_id = 1
+)
+ORDER BY ID;

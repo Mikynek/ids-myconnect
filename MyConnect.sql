@@ -137,10 +137,10 @@ CREATE TABLE Videa (
 
 -- Uzivatel
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
-VALUES ('johndoe@example.com', 'John', 'Doe', TO_DATE('1990-01-01','YYYY-MM-DD'), 'M', 'New York', 'Fifth Avenue', 10, 'Developer', 'MIT', 'S');
+VALUES ('adamdoe@example.com', 'Adam', 'Doe', TO_DATE('1990-01-01','YYYY-MM-DD'), 'M', 'New York', 'Fifth Avenue', 10, 'Developer', 'MIT', 'S');
 
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
-VALUES ('janedoe@example.com', 'Jane', 'Doe', TO_DATE('1995-05-05','YYYY-MM-DD'), 'Z', 'Los Angeles', 'Hollywood Boulevard', 20, 'Designer', 'UCLA', 'S');
+VALUES ('janefoster@example.com', 'Jane', 'Foster', TO_DATE('1995-05-05','YYYY-MM-DD'), 'Z', 'Los Angeles', 'Hollywood Boulevard', 20, 'Designer', 'UCLA', 'S');
 
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
 VALUES ('johncena@example.com', 'John', 'Cena', TO_DATE('1977-04-23','YYYY-MM-DD'), 'M', 'West Newbury', 'Main Street', 15, 'Wrestler', NULL, 'Z');
@@ -309,4 +309,4 @@ FROM
 ORDER BY
   DATUM ASC;
   
--- 1x Joining 3 tables ...
+-- 1x Joining 3 tables

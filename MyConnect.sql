@@ -195,13 +195,19 @@ VALUES ('Nic noveho, a ty?', 2, 1);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('Taky nic zajimaveho', 1, 1);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
-VALUES ('Tento uzivatel neexistuje', 3, 1);
+VALUES ('Hodne me bavi to IDS kluci.', 3, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Jo taky taky!! ', 1, 1);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Budeme se opet ucit spolecne na to IDS?', 2, 1);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('ola, jak se mas?', 2, 2);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('olaola.. nic noveho, a ty?', 1, 2);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('olaolaola! Taky nic zajimaveho', 2, 2);
+INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
+VALUES ('Prestan spamovat kamarade, ucime se !!!.', 3, 2);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
 VALUES ('morgen, jak se mas?', 3, 3);
 INSERT INTO Zprava (obsah, id_uzivatel, id_konverzace)
@@ -244,6 +250,10 @@ INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
 VALUES (TO_DATE('2022-03-20', 'YYYY-MM-DD'), 'Brno', 'Návštěva v Brně', 'V Brně jsem navštívil krásnou zoologickou zahradu a ochutnal místní speciality.', 2);
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
 VALUES (TO_DATE('2022-05-05', 'YYYY-MM-DD'), 'Plzeň', 'Pivní festival v Plzni', 'Na pivním festivalu v Plzni jsem ochutnal mnoho druhů piva a poznal zajímavé lidi.', 3);
+INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
+VALUES (SYSDATE, 'Bratislava', 'Na výletě', 'Bratislava opět nesklamala.', 2);
+INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
+VALUES (SYSDATE, 'Dolny Kubin', 'Muj život je jedna pohádka', 'Dnes na Oravě.Lepší lyžování jsme asi ješte nikdy nezažil.', 3);
 
 -- Prispevek_zminil
 INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
@@ -274,7 +284,7 @@ INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
 VALUES (480, 72.1, 30, 1, NULL);
 
 -- 2x Joinig 2 tables
--- USER WHO POSTED PRISPEVEK 
+-- USER POSTED PRISPEVEK 
 SELECT
   MAIL,
   CONCAT(CONCAT(JMENO,
@@ -287,10 +297,11 @@ SELECT
   'BEZ POPISU') AS POPIS
 FROM
   UZIVATEL
-  JOIN PRISPEVEK
-  ON UZIVATEL.ID=PRISPEVEK.ID_UZIVATEL;
+JOIN PRISPEVEK
+  ON UZIVATEL.ID=PRISPEVEK.ID_UZIVATEL
+ORDER BY DATUM DESC;
 
--- USER WHO IS AN AUTHOR OF AKCE 
+-- USER CREATED AKCE 
 SELECT
   CONCAT(CONCAT(JMENO,
   ' '),
@@ -310,4 +321,57 @@ FROM
 ORDER BY
   DATUM ASC;
   
--- 1x Joining 3 tables ...
+-- 1x Joining 3 tables 
+-- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO
+--      NEWEST MESSAGES WITHIN EACH KONVERZACE ON TOP.
+
+SELECT  
+    NAZEV AS NAZEV_KONVERZACE, 
+    CONCAT(CONCAT(JMENO,
+    ' '),
+    PRIJMENI) AS JMENO_ODESILATELE,
+    OBSAH, 
+    ODESLANA AS ZPRAVA_ODESLANA 
+FROM  
+    Zprava
+JOIN
+    UZIVATEL
+ON  
+    ZPRAVA.ID_UZIVATEL=UZIVATEL.ID
+JOIN 
+    Konverzace
+ON
+    ZPRAVA.ID_KONVERZACE=Konverzace.ID
+ORDER BY Konverzace.ID, ZPRAVA_ODESLANA DESC;
+    
+-- 2x SELECTS with GROUP BY and Agreg fc
+-- NUMBER OF ZPRAVY WITHIN A KONVEZACE
+
+SELECT  
+    KONVERZACE.ID AS ID_KONVERZACE, 
+    NAZEV AS NAZEV_KONVERZACE,
+    COUNT(*) AS POCET_ZPRAV
+FROM  
+    Zprava
+JOIN 
+    Konverzace
+ON
+    ZPRAVA.ID_KONVERZACE=Konverzace.ID
+GROUP BY KONVERZACE.ID, NAZEV;
+ORDER BY POCET_ZPRAV DESC;
+
+
+-- NUMBER OF ZPRAVY WITHIN A KONVEZACE
+
+SELECT
+    UZIVATEL.ID AS ID_UZIVATELE,
+    MAIL,
+    COUNT(*) AS POCET_PRISPEVKU
+FROM
+  UZIVATEL
+JOIN 
+    PRISPEVEK
+ON 
+    UZIVATEL.ID=PRISPEVEK.ID_UZIVATEL
+GROUP BY UZIVATEL.ID, MAIL
+ORDER BY POCET_PRISPEVKU DESC;

@@ -227,6 +227,8 @@ VALUES (2, 1);
 INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
 VALUES (2, 2);
 INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
+VALUES (3, 2);
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id)
 VALUES (1, 3);
 
 -- Alba
@@ -238,6 +240,10 @@ INSERT INTO Alba (nazev, nastaveni_soukromi, popis, id_uzivatel)
 VALUES ('Mé oblíbené restaurace', 'public', 'Fotografie z mých oblíbených restaurací', 3);
 
 -- Prispevek
+INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
+VALUES (TO_DATE('2021-10-05', 'YYYY-MM-DD'), 'Tokyo, Japan', 'Exploring Tokyo', 'I spent a week exploring the vibrant city of Tokyo, trying new foods and visiting famous landmarks like the Shibuya Crossing and Tokyo Tower.', 1);
+INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
+VALUES (TO_DATE('2021-05-01', 'YYYY-MM-DD'), 'Karlovy Vary', 'Wellness víkend v Karlových Varech', 'Strávil jsem zde tři dny v luxusním wellness hotelu a užil si relaxaci v termálních pramenech.', 3);
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
 VALUES (TO_DATE('2022-01-15', 'YYYY-MM-DD'), 'Praha', 'Můj výlet do Prahy', 'V Praze jsem si prohlédl staré město a navštívil několik muzeí.', 1);
 INSERT INTO Prispevek (datum, misto, nadpis, popis, id_uzivatel)
@@ -312,18 +318,36 @@ ORDER BY
 -- 1x Joining 3 tables
 
 -- 1x EXIST SELECT
--- SHOW LIST OF ATTENDERS FOR EVENT WITH ID 1
+-- SHOW LIST OF ATTENDERS FOR Akce PLES
 SELECT
     ID AS ID_UZIVATEL,
-    CONCAT(CONCAT(JMENO, ' '), PRIJMENI) AS JMENO
+    CONCAT(CONCAT(JMENO, ' '), PRIJMENI) AS JMENO,
+    MAIL
 FROM
     Uzivatel
 WHERE EXISTS (
     SELECT *
     FROM 
         Akce_ucastnici
+    JOIN Akce
+        ON Akce.id = Akce_ucastnici.akce_id
     WHERE
         Akce_ucastnici.uzivatel_id = Uzivatel.id AND
-        Akce_ucastnici.akce_id = 1
+        Akce.nazev = 'Ples'
 )
 ORDER BY ID;
+
+-- 1x IN OPERATOR AND SELECT INSIDE
+-- WHICH Uzivatel's HAVE POSTED Prispevek IN 2021?
+SELECT
+    DISTINCT CONCAT(CONCAT(UZIVATEL.JMENO, ' '), UZIVATEL.PRIJMENI) AS JMENO_UZIVATELE,
+    CASE
+        WHEN UZIVATEL.POHLAVI = 'M' THEN 'MUZ'
+        ELSE 'ZENA'
+    END AS POHLAVI,
+    UZIVATEL.ZAMESTNANI AS ZAMESTNANI
+FROM Prispevek
+JOIN Uzivatel ON Prispevek.id_uzivatel = Uzivatel.id 
+WHERE id_uzivatel IN
+    (SELECT id_uzivatel FROM Prispevek
+        WHERE datum BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD') AND TO_DATE('2021-12-31', 'YYYY-MM-DD'));

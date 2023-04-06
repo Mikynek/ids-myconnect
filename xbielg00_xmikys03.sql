@@ -120,7 +120,7 @@ CREATE TABLE Fotky (
     nadpis VARCHAR(40) NOT NULL,
     popis VARCHAR(511),
     id_uzivatel INTEGER NOT NULL, 
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE,
     -- specialisation attributes
     panorama CHAR(8) CHECK (panorama IN ('Y', 'N')),
     pomer_stran DECIMAL(4,2),
@@ -135,7 +135,7 @@ CREATE TABLE Videa (
     nadpis VARCHAR(40) NOT NULL,
     popis VARCHAR(511),
     id_uzivatel INTEGER NOT NULL, 
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE,
     -- specialisation attributes
     kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
     delka_sekund NUMBER,

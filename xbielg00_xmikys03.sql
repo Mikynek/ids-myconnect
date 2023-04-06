@@ -113,22 +113,33 @@ CREATE TABLE Prispevek_zminil (
 
 -- Fotky and Videa are specialization of Prispevek table.
 -- Fotky/Videa have additional attributes specific the represented entity.
--- Specialization is done by Prispevek's id. The ID is also used to represent the Fotky/Videa entity.
 CREATE TABLE Fotky (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    datum DATE DEFAULT SYSDATE NOT NULL,
+    misto VARCHAR(20),
+    nadpis VARCHAR(40) NOT NULL,
+    popis VARCHAR(511),
+    id_uzivatel INTEGER NOT NULL, 
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE
+    -- specialisation attributes
     panorama CHAR(8) CHECK (panorama IN ('Y', 'N')),
     pomer_stran DECIMAL(4,2),
-    id INTEGER,
-    FOREIGN KEY (id) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
     id_alba INTEGER,
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Videa (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    datum DATE DEFAULT SYSDATE NOT NULL,
+    misto VARCHAR(20),
+    nadpis VARCHAR(40) NOT NULL,
+    popis VARCHAR(511),
+    id_uzivatel INTEGER NOT NULL, 
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id) ON DELETE CASCADE
+    -- specialisation attributes
     kvalita INTEGER CHECK( kvalita IN (360, 480, 720, 1080) ),
     delka_sekund NUMBER,
     FPS INTEGER,
-    id INTEGER,
-    FOREIGN KEY (id) REFERENCES Prispevek(id) ON DELETE CASCADE, --INHERITANCE
     id_alba INTEGER,
     FOREIGN KEY (id_alba) REFERENCES Alba(id) ON DELETE CASCADE
 );

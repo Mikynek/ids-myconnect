@@ -285,20 +285,24 @@ INSERT INTO Prispevek_zminil (uzivatel_id, prispevek_id)
 VALUES (3, 2);
 
 -- Fotky
-INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('N', 1.5, 1, 2);
-INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('N', 1.33, 2, 1);
-INSERT INTO Fotky (panorama, pomer_stran, id, id_alba)
-VALUES ('Y', 2.5, 2, 2);
+INSERT INTO Fotky (datum, misto, nadpis, popis, id_uzivatel, panorama, pomer_stran, id_alba)
+VALUES (TO_DATE('2023-04-06', 'YYYY-MM-DD'), 'Hory', 'Krasny vyhled na vrchol', 'Tento vrchol byl trosku narocny, ale stalo to zato', 2, 'N', 1.78, 3);
+
+INSERT INTO Fotky (datum, misto, nadpis, popis, id_uzivatel, panorama, pomer_stran, id_alba)
+VALUES (TO_DATE('2023-04-05', 'YYYY-MM-DD'), 'Jezero', 'Rano na brehu', 'Toto jezero bylo krasne klidne a ja jsem si zde uzil skvely ranni vychazku', 3, 'N', 1.5, 2);
+
+INSERT INTO Fotky (datum, misto, nadpis, popis, id_uzivatel, panorama, pomer_stran, id_alba)
+VALUES (SYSDATE, 'Praha', 'Krasny vyhled', 'Tento vyhled byl jednoduse kouzelny', 1, 'N', 1.33, 1);
 
 -- Videa
-INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
-VALUES (1080, 123123.1, 60, 1, 1);
-INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
-VALUES (720, 18.4, 30, 2, 2);
-INSERT INTO Videa (kvalita, delka_sekund, FPS, id, id_alba)
-VALUES (480, 72.1, 30, 1, NULL);
+INSERT INTO Videa (datum, misto, nadpis, popis, id_uzivatel, kvalita, delka_sekund, FPS, id_alba)
+VALUES (SYSDATE, 'Plaz', 'Plavani s delfiny', 'Byla to nezapomenutelna zkusenost plavat s tak nadsenymi tvory', 2, 1080, 240, 60, 3);
+
+INSERT INTO Videa (datum, misto, nadpis, popis, id_uzivatel, kvalita, delka_sekund, FPS, id_alba)
+VALUES (TO_DATE('2023-04-04', 'YYYY-MM-DD'), 'Les', 'Pryc od civilizace', 'Vzal jsem si par dni volna, abych si uzil ticho a klid daleko od mesta', 3, 360, 120, 30, 1);
+
+INSERT INTO Videa (datum, misto, nadpis, popis, id_uzivatel, kvalita, delka_sekund, FPS, id_alba)
+VALUES (SYSDATE, 'Plaz', 'Surfovani', 'Prijel jsem si uzit slunicko a surf', 1, 720, 180, 30, 2);
 
 -- 2x Joinig 2 tables
 -- USER POSTED PRISPEVEK 

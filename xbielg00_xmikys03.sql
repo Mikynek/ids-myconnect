@@ -455,22 +455,68 @@ BEGIN
 END;
 /
 
--- demonstration of new data
-SELECT
-  CONCAT(CONCAT(JMENO,
-  ' '),
-  PRIJMENI) AS JMENO_ZAKLADATELE,
-  MAIL      AS MAIL_ZAKLADATELE,
-  NAZEV     AS NAZEV_AKCE,
-  MISTO     AS MISTO_AKCE,
-  DATUM     AS DATUM_AKCE,
-  CASE
-    WHEN TYP_UDALOSTI = 'F' THEN 'FYZICKA'
-    ELSE 'VIRTUALNI'
-  END       AS TYP_AKCE
-FROM
-  UZIVATEL
-  JOIN AKCE
-  ON UZIVATEL.ID=ID_UZIVATEL
-ORDER BY
-  DATUM ASC;
+-- PROCEDURE to demonstrate new data (DBMS_OUTPUT) with use of CURSOR
+CREATE OR REPLACE PROCEDURE zakladetele_akce AS
+BEGIN 
+  DECLARE
+    v_jmeno_zakladatele VARCHAR2(100);
+    v_mail_zakladatele VARCHAR2(100);
+    v_nazev_akce VARCHAR2(100);
+    v_misto_akce VARCHAR2(100);
+    v_datum_akce DATE;
+    v_typ_akce VARCHAR2(20);
+    
+    -- Declare the cursor to hold the result set
+    CURSOR c_akce IS
+      SELECT
+        CONCAT(CONCAT(u.JMENO, ' '), u.PRIJMENI) AS JMENO_ZAKLADATELE,
+        u.MAIL AS MAIL_ZAKLADATELE,
+        a.NAZEV AS NAZEV_AKCE,
+        a.MISTO AS MISTO_AKCE,
+        a.DATUM AS DATUM_AKCE,
+        CASE
+          WHEN a.TYP_UDALOSTI = 'F' THEN 'FYZICKA'
+          ELSE 'VIRTUALNI'
+        END AS TYP_AKCE
+      FROM
+        UZIVATEL u
+        JOIN AKCE a ON u.ID = a.ID_UZIVATEL
+      ORDER BY
+        a.DATUM ASC;
+  BEGIN
+    OPEN c_akce;
+    
+    -- Loop through the cursor and fetch the data
+    LOOP
+      FETCH c_akce INTO
+        v_jmeno_zakladatele,
+        v_mail_zakladatele,
+        v_nazev_akce,
+        v_misto_akce,
+        v_datum_akce,
+        v_typ_akce;
+      
+      -- Exit the loop if there is no more data
+      EXIT WHEN c_akce%NOTFOUND;
+      
+      -- Print or use the fetched data as needed
+      DBMS_OUTPUT.PUT_LINE(
+        v_jmeno_zakladatele || ', ' ||
+        v_mail_zakladatele || ', ' ||
+        v_nazev_akce || ', ' ||
+        v_misto_akce || ', ' ||
+        TO_CHAR(v_datum_akce, 'YYYY-MM-DD') || ', ' ||
+        v_typ_akce
+      );
+    END LOOP;
+
+    CLOSE c_akce;
+
+  END;
+END;
+/
+
+BEGIN
+  zakladetele_akce;
+END;
+/

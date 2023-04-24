@@ -428,3 +428,49 @@ JOIN Uzivatel ON Prispevek.id_uzivatel = Uzivatel.id
 WHERE id_uzivatel IN
     (SELECT id_uzivatel FROM Prispevek
         WHERE datum BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD') AND TO_DATE('2021-12-31', 'YYYY-MM-DD'));
+
+-- 2x STORED PROCEDURES
+-- PROCEDURE to CREATE a new event
+CREATE OR REPLACE PROCEDURE pridat_akce(
+  p_nazev IN Akce.nazev%TYPE,
+  p_datum IN Akce.datum%TYPE,
+  p_misto IN Akce.misto%TYPE,
+  p_typ_udalosti IN Akce.typ_udalosti%TYPE,
+  p_id_uzivatel IN Akce.id_uzivatel%TYPE
+)
+IS
+BEGIN
+  INSERT INTO Akce (nazev, datum, misto, typ_udalosti, id_uzivatel)
+  VALUES (p_nazev, p_datum, p_misto, p_typ_udalosti, p_id_uzivatel);
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    RAISE;
+END;
+/
+
+BEGIN
+  pridat_akce('Narozeninová oslava', TO_DATE('2023-06-21', 'YYYY-MM-DD'), 'U Jindry', 'F', 3);
+END;
+/
+
+-- demonstration of new data
+SELECT
+  CONCAT(CONCAT(JMENO,
+  ' '),
+  PRIJMENI) AS JMENO_ZAKLADATELE,
+  MAIL      AS MAIL_ZAKLADATELE,
+  NAZEV     AS NAZEV_AKCE,
+  MISTO     AS MISTO_AKCE,
+  DATUM     AS DATUM_AKCE,
+  CASE
+    WHEN TYP_UDALOSTI = 'F' THEN 'FYZICKA'
+    ELSE 'VIRTUALNI'
+  END       AS TYP_AKCE
+FROM
+  UZIVATEL
+  JOIN AKCE
+  ON UZIVATEL.ID=ID_UZIVATEL
+ORDER BY
+  DATUM ASC;

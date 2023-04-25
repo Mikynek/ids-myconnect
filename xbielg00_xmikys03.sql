@@ -60,7 +60,7 @@ CREATE TABLE Zprava (
     obsah VARCHAR(255) NOT NULL,
     odeslana TIMESTAMP  DEFAULT SYSTIMESTAMP NOT NULL,
     id_uzivatel INTEGER NOT NULL,
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id), -- Change user, when deleting user to <DELETED USER>
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id),
     id_konverzace INTEGER NOT NULL,
     FOREIGN KEY (id_konverzace) REFERENCES Konverzace(id) ON DELETE CASCADE
 );
@@ -520,3 +520,49 @@ BEGIN
   zakladetele_akce;
 END;
 /
+
+-- The trigger checks if the user is already participating in the event before being added to the Event_participants table.
+-- If the user is already a participant in the event, the trigger prevents duplicate entries
+CREATE OR REPLACE TRIGGER trg_akce_ucastnici_omezeni
+BEFORE INSERT ON Akce_ucastnici
+FOR EACH ROW
+DECLARE
+  pocet_ucasti INTEGER;
+BEGIN
+  SELECT COUNT(*)
+  INTO pocet_ucasti
+  FROM Akce_ucastnici
+  WHERE uzivatel_id = :NEW.uzivatel_id AND akce_id = :NEW.akce_id;
+  
+  IF pocet_ucasti > 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Uživatel se již účastní této akce. Nelze přidat duplicitní záznam.');
+  END IF;
+END trg_akce_ucastnici_omezeni;
+/
+
+-- Create a new user
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tester@example.com', 'Tester', 'Fester', TO_DATE('1990-01-01','YYYY-MM-DD'), 'M', 'New York', 'Fifth Avenue', 10, 'Developer', 'MIT', 'S');
+
+-- First insertion should succeed
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id) VALUES (1, (SELECT ID FROM UZIVATEL WHERE MAIL = 'tester@example.com'));
+
+-- Second insertion should fail and raise an error
+INSERT INTO Akce_ucastnici (uzivatel_id, akce_id) VALUES (1, (SELECT ID FROM UZIVATEL WHERE MAIL = 'tester@example.com'));
+
+
+-- Automatic addition of the author of the conversation to the participants
+CREATE OR REPLACE TRIGGER trg_konverzace_autor_ucastnik
+AFTER INSERT ON Konverzace
+FOR EACH ROW
+BEGIN
+  INSERT INTO Konverzace_ucastnici (uzivatel_id, konverzace_id)
+  VALUES (:NEW.id_uzivatel, :NEW.id);
+END trg_konverzace_autor_ucastnik;
+/
+
+-- Create a new conversation
+INSERT INTO Konverzace (nazev, id_uzivatel) VALUES ('Plánování akce', 1);
+
+-- Check if the author (user with id 1) is added as a participant
+SELECT * FROM Konverzace_ucastnici WHERE konverzace_id = (SELECT ID FROM Konverzace WHERE nazev = 'Plánování akce');

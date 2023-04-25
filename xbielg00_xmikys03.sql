@@ -728,3 +728,20 @@ WHEN celkovy_pocet_pratel BETWEEN 5 AND 20 THEN 'Stredni dosah'
 ELSE 'Velky dosah'
 END AS Socialni_dosah
 FROM pocet_pratel;
+
+-- [task] One materialized view belonging to the other team member
+-- get current schema name
+SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL;
+
+-- create materialized view
+CREATE MATERIALIZED VIEW XBIELG00.mv_pocet_pratel
+AS
+SELECT uzivatel_id, COUNT(pritel_id) AS pocet_pratel
+FROM Pratelstvi
+GROUP BY uzivatel_id;
+
+SELECT * FROM mv_pocet_pratel;
+
+GRANT SELECT ON XBIELG00.Pratelstvi TO XMIKYS03;
+GRANT SELECT ON XBIELG00.Uzivatel TO XMIKYS03;
+GRANT SELECT, INSERT, UPDATE, DELETE ON XMIKYS03.mv_pocet_pratel TO XMIKYS03;

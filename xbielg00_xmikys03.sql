@@ -734,14 +734,19 @@ FROM pocet_pratel;
 SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL;
 
 -- create materialized view
+-- Drop the existing materialized view
+DROP MATERIALIZED VIEW XBIELG00.mv_pocet_pratel;
+
+-- Create a new materialized view
 CREATE MATERIALIZED VIEW XBIELG00.mv_pocet_pratel
 AS
 SELECT uzivatel_id, COUNT(pritel_id) AS pocet_pratel
 FROM Pratelstvi
 GROUP BY uzivatel_id;
 
-SELECT * FROM mv_pocet_pratel;
+SELECT * FROM XMIKYS03.mv_pocet_pratel;
 
 GRANT SELECT ON XBIELG00.Pratelstvi TO XMIKYS03;
 GRANT SELECT ON XBIELG00.Uzivatel TO XMIKYS03;
-GRANT SELECT, INSERT, UPDATE, DELETE ON XMIKYS03.mv_pocet_pratel TO XMIKYS03;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON XBIELG00.mv_pocet_pratel TO XMIKYS03;

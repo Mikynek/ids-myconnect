@@ -270,7 +270,7 @@ INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 17);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 18);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 19);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 20);
--- User 1 has 21 friends
+-- User 1 
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 4);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 5);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 6);
@@ -291,7 +291,7 @@ INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 20);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 21);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 22);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 23);
--- User 2 has 10 friends
+-- User 2 
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 4);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 5);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 6);
@@ -310,6 +310,41 @@ INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 18);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 19);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 20);
 INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 21);
+-- User 3 
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 4);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 5);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 6);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 7);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 10);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 11);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 12);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 13);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 14);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 15);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 16);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 17);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 18);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 19);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 20);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 21);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 22);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 23);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 24);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (3, 25);
+-- User 4 
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 4);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 5);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 6);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 7);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (4, 10);
+-- User 5
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (5, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (5, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (5, 10);
 
 -- Konverzace
 INSERT INTO Konverzace (nazev, id_uzivatel)

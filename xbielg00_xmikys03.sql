@@ -17,16 +17,16 @@ DROP TABLE Videa CASCADE CONSTRAINTS;
 
 CREATE TABLE Uzivatel (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, -- create generated primary key
-    mail VARCHAR(30) NOT NULL UNIQUE,
+    mail VARCHAR(50) NOT NULL UNIQUE,
     jmeno VARCHAR(20) NOT NULL,
     prijmeni VARCHAR(20) NOT NULL,
     narozeni DATE NOT NULL,
     pohlavi CHAR(7) CHECK (pohlavi IN ('M', 'Z')),
-    mesto VARCHAR(20),
-    ulice VARCHAR(20),
+    mesto VARCHAR(50),
+    ulice VARCHAR(50),
     cislo_popisne INTEGER,
-    zamestnani VARCHAR(30),
-    skola VARCHAR(30),
+    zamestnani VARCHAR(50),
+    skola VARCHAR(50),
     vztah CHAR(5) CHECK (vztah IN ('S', 'Z'))
 );
 
@@ -37,6 +37,11 @@ CREATE TABLE Pratelstvi ( -- unary
     PRIMARY KEY (uzivatel_id, pritel_id),
     FOREIGN KEY (uzivatel_id) REFERENCES Uzivatel(id) ON DELETE CASCADE,
     FOREIGN KEY (pritel_id) REFERENCES Uzivatel(id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX jedinecny_pratelstvi ON Pratelstvi (
+  LEAST(uzivatel_id, pritel_id),
+  GREATEST(uzivatel_id, pritel_id)
 );
 
 CREATE TABLE Konverzace (
@@ -60,7 +65,7 @@ CREATE TABLE Zprava (
     obsah VARCHAR(255) NOT NULL,
     odeslana TIMESTAMP  DEFAULT SYSTIMESTAMP NOT NULL,
     id_uzivatel INTEGER NOT NULL,
-    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id), -- Change user, when deleting user to <DELETED USER>
+    FOREIGN KEY (id_uzivatel) REFERENCES Uzivatel(id),
     id_konverzace INTEGER NOT NULL,
     FOREIGN KEY (id_konverzace) REFERENCES Konverzace(id) ON DELETE CASCADE
 );
@@ -156,15 +161,155 @@ VALUES ('janefoster@example.com', 'Jane', 'Foster', TO_DATE('1995-05-05','YYYY-M
 INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
 VALUES ('johncena@example.com', 'John', 'Cena', TO_DATE('1977-04-23','YYYY-MM-DD'), 'M', 'West Newbury', 'Main Street', 15, 'Wrestler', NULL, 'Z');
 
--- Pratelstvi
-INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
-VALUES ( 1, 2);
+-- extra 
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('peterparker@example.com', 'Peter', 'Parker', TO_DATE('2000-08-10','YYYY-MM-DD'), 'M', 'New York', 'Queens Blvd', 100, 'Photographer', 'Midtown High', 'S');
 
-INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
-VALUES ( 2, 3);
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tonystark1@example.com', 'Tony', 'Stark', TO_DATE('1970-05-29','YYYY-MM-DD'), 'M', 'New York', 'Park Avenue', 1080, 'Inventor', 'MIT', 'Z');
 
-INSERT INTO Pratelstvi (uzivatel_id, pritel_id)
-VALUES ( 3, 1);
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('brucewayne1@example.com', 'Bruce', 'Wayne', TO_DATE('1985-02-19','YYYY-MM-DD'), 'M', 'Gotham', 'Wayne Manor', 1, 'Philanthropist', 'Princeton', 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('clarkkent1@example.com', 'Clark', 'Kent', TO_DATE('1988-06-18','YYYY-MM-DD'), 'M', 'Metropolis', 'Daily Planet', 355, 'Journalist', 'Metropolis University', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('dianaprince1@example.com', 'Diana', 'Prince', TO_DATE('1984-07-22','YYYY-MM-DD'), 'Z', 'Washington DC', 'Pennsylvania Avenue', 1600, 'Diplomat', NULL, 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('stevejobs1@example.com', 'Steve', 'Jobs', TO_DATE('1955-02-24','YYYY-MM-DD'), 'M', 'Cupertino', 'Infinite Loop', 1, 'Entrepreneur', 'Reed College', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('billgates1@example.com', 'Bill', 'Gates', TO_DATE('1955-10-28','YYYY-MM-DD'), 'M', 'Medina', 'Evergreen Point Road', 1835, 'Philanthropist', NULL, 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tonystark@example.com', 'Tony', 'Stark', TO_DATE('1970-05-29','YYYY-MM-DD'), 'M', 'New York', 'Park Avenue', 1080, 'Inventor', 'MIT', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('brucewayne@example.com', 'Bruce', 'Wayne', TO_DATE('1985-02-19','YYYY-MM-DD'), 'M', 'Gotham', 'Wayne Manor', 1, 'Philanthropist', 'Princeton', 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('clarkkent@example.com', 'Clark', 'Kent', TO_DATE('1988-06-18','YYYY-MM-DD'), 'M', 'Metropolis', 'Daily Planet', 355, 'Journalist', 'Metropolis University', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('dianaprince@example.com', 'Diana', 'Prince', TO_DATE('1984-07-22','YYYY-MM-DD'), 'Z', 'Washington DC', 'Pennsylvania Avenue', 1600, 'Diplomat', NULL, 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('stevejobs@example.com', 'Steve', 'Jobs', TO_DATE('1955-02-24','YYYY-MM-DD'), 'M', 'Cupertino', 'Infinite Loop', 1, 'Entrepreneur', 'Reed College', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('billgates@example.com', 'Bill', 'Gates', TO_DATE('1955-10-28','YYYY-MM-DD'), 'M', 'Medina', 'Evergreen Point Road', 1835, 'Philanthropist', 'Harvard University', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('elonmusk@example.com', 'Elon', 'Musk', TO_DATE('1971-06-28','YYYY-MM-DD'), 'M', 'Los Angeles', 'Bel Air', 10880, 'Entrepreneur', 'University of Pennsylvania', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('jane@example.com', 'Jane', 'Doe', TO_DATE('1990-03-15','YYYY-MM-DD'), 'Z', 'Los Angeles', 'Sunset Blvd', 1001, 'Actress', 'UCLA', 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('elonmusk1@example.com', 'Elon', 'Musk', TO_DATE('1971-06-28','YYYY-MM-DD'), 'M', 'Palo Alto', 'Alma St', 3500, 'Entrepreneur', 'University of Pretoria', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('serenawilliams@example.com', 'Serena', 'Williams', TO_DATE('1981-09-26','YYYY-MM-DD'), 'Z', 'Palm Beach Gardens', 'Avenue of the Champions', 369, 'Tennis player', NULL, 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('barackobama@example.com', 'Barack', 'Obama', TO_DATE('1961-08-04','YYYY-MM-DD'), 'M', 'Washington DC', 'Pennsylvania Avenue', 1600, 'Politician', 'Harvard Law School', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('kate@example.com', 'Kate', 'Middleton', TO_DATE('1982-01-09','YYYY-MM-DD'), 'Z', 'London', 'Kensington Palace Gardens', 1, 'Duchess', 'University of St. Andrews', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tomhanks@example.com', 'Tom', 'Hanks', TO_DATE('1956-07-09','YYYY-MM-DD'), 'M', 'Los Angeles', 'Pacific Palisades', 320, 'Actor', 'California State University', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('taylorswift@example.com', 'Taylor', 'Swift', TO_DATE('1989-12-13','YYYY-MM-DD'), 'Z', 'New York', 'Franklin St', 201, 'Singer-songwriter', NULL, 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('natasharomanoff@example.com', 'Natasha', 'Romanoff', TO_DATE('1984-11-22','YYYY-MM-DD'), 'Z', 'New York', 'Fifth Avenue', 725, 'Spy', 'Red Room Academy', 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('wandas Maximoff@example.com', 'Wanda', 'Maximoff', TO_DATE('1990-03-05','YYYY-MM-DD'), 'Z', 'Sokovia', 'Sienkiewicza', 11, 'Superhero', 'Sokovian Institute of Technology', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tony-romos@example.com', 'Tony', 'Romo', TO_DATE('1980-04-21','YYYY-MM-DD'), 'M', 'San Diego', 'W. A Street', 215, 'Retired Football Player', 'Eastern Illinois University', 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('michael-jordan@example.com', 'Michael', 'Jordan', TO_DATE('1963-02-17','YYYY-MM-DD'), 'M', 'New York', 'Park Avenue', 452, 'Retired Basketball Player', 'University of North Carolina at Chapel Hill', 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('cristiano-ronaldo@example.com', 'Cristiano', 'Ronaldo', TO_DATE('1985-02-05','YYYY-MM-DD'), 'M', 'Turin', 'Corso Galileo Ferraris', 32, 'Football Player', NULL, 'Z');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('serenawilliams1@example.com', 'Serena', 'Williams', TO_DATE('1981-09-26','YYYY-MM-DD'), 'Z', 'Palm Beach', 'South Ocean Boulevard', 100, 'Retired Tennis Player', NULL, 'S');
+
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('lebronjames@example.com', 'LeBron', 'James', TO_DATE('1984-12-30','YYYY-MM-DD'), 'M', 'Los Angeles', 'Pacific Palisades', 320, 'Basketball Player', NULL, 'Z');
+
+-- pratelstvi
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES ( 1, 2);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES ( 2, 3);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES ( 3, 1);
+-- User has 19 friends
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 2);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 3);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 4);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 5);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 6);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 7);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 10);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 11);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 12);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 13);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 14);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 15);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 16);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 17);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 18);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 19);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (23, 20);
+-- User 1 has 21 friends
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 4);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 5);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 6);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 7);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 10);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 11);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 12);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 13);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 14);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 15);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 16);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 17);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 18);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 19);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 20);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 21);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 22);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (1, 23);
+-- User 2 has 10 friends
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 4);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 5);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 6);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 7);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 8);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 9);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 10);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 11);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 12);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 13);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 14);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 15);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 16);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 17);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 18);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 19);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 20);
+INSERT INTO Pratelstvi (uzivatel_id, pritel_id) VALUES (2, 21);
 
 -- Konverzace
 INSERT INTO Konverzace (nazev, id_uzivatel)
@@ -429,7 +574,7 @@ WHERE id_uzivatel IN
     (SELECT id_uzivatel FROM Prispevek
         WHERE datum BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD') AND TO_DATE('2021-12-31', 'YYYY-MM-DD'));
 
--- 2x STORED PROCEDURES
+-- [task] two STORED PROCEDURES
 -- PROCEDURE to CREATE a new event
 CREATE OR REPLACE PROCEDURE pridat_akce(
   p_nazev IN Akce.nazev%TYPE,
@@ -521,7 +666,70 @@ BEGIN
 END;
 /
 
--- 1x EXPLAIN PLAN
+-- [task] Two non-trivial database TRIGGERS including their demonstration
+-- The trigger checks if the user is already participating in the event before being added to the Event_participants table.
+-- If the user is already a participant in the event, the trigger prevents duplicate entries
+CREATE OR REPLACE TRIGGER trg_akce_ucastnici_omezeni
+BEFORE INSERT ON Akce_ucastnici
+FOR EACH ROW
+DECLARE
+  pocet_ucasti INTEGER;
+BEGIN
+  SELECT COUNT(*)
+  INTO pocet_ucasti
+  FROM Akce_ucastnici
+  WHERE uzivatel_id = :NEW.uzivatel_id AND akce_id = :NEW.akce_id;
+  
+  IF pocet_ucasti > 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Uživatel se již účastní této akce. Nelze přidat duplicitní záznam.');
+  END IF;
+END trg_akce_ucastnici_omezeni;
+/
+
+-- proof of the trigger
+  -- Create a new user
+INSERT INTO Uzivatel (mail, jmeno, prijmeni, narozeni, pohlavi, mesto, ulice, cislo_popisne, zamestnani, skola, vztah)
+VALUES ('tester@example.com', 'Tester', 'Fester', TO_DATE('1990-01-01','YYYY-MM-DD'), 'M', 'New York', 'Fifth Avenue', 10, 'Developer', 'MIT', 'S');
+
+  -- First insertion should succeed
+INSERT INTO Akce_ucastnici (akce_id, uzivatel_id) VALUES (1, (SELECT ID FROM uzivatel WHERE mail = 'tester@example.com'));
+
+  -- Second insertion SHOULD fail and raise an error with proper message
+INSERT INTO Akce_ucastnici (akce_id, uzivatel_id) VALUES (1, (SELECT ID FROM uzivatel WHERE mail = 'tester@example.com'));
+
+-- Automatic addition of the author of the conversation to the participants
+CREATE OR REPLACE TRIGGER trg_konverzace_autor_ucastnik
+AFTER INSERT ON Konverzace
+FOR EACH ROW
+BEGIN
+  INSERT INTO Konverzace_ucastnici (uzivatel_id, konverzace_id)
+  VALUES (:NEW.id_uzivatel, :NEW.id);
+END trg_konverzace_autor_ucastnik;
+/
+
+-- proof of the trigger
+  -- Create a new conversation
+INSERT INTO Konverzace (nazev, id_uzivatel) VALUES ('Plánování akce', 1);
+
+  -- Check if the author (user with id 1) is added as a participant
+SELECT * FROM Konverzace_ucastnici WHERE konverzace_id = (SELECT ID FROM Konverzace WHERE nazev = 'Plánování akce');
+
+-- [task] One complex SELECT query using the WITH clause and the CASE operator
+-- Calculate the number of friends for each user and classify them based on the number of friends they have (e.g., "Maly dosah", "", "Velky dosah"):
+WITH pocet_pratel AS (
+SELECT uzivatel_id, COUNT(*) as celkovy_pocet_pratel
+FROM Pratelstvi
+GROUP BY uzivatel_id
+)
+SELECT uzivatel_id, celkovy_pocet_pratel,
+CASE
+WHEN celkovy_pocet_pratel < 5 THEN 'Maly dosah'
+WHEN celkovy_pocet_pratel BETWEEN 5 AND 20 THEN 'Stredni dosah'
+ELSE 'Velky dosah'
+END AS Socialni_dosah
+FROM pocet_pratel;
+
+-- [task] one EXPLAIN PLAN
 EXPLAIN PLAN FOR
 -- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO from UZIVATEL Cena
 SELECT

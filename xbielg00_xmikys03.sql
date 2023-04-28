@@ -574,8 +574,10 @@ WHERE id_uzivatel IN
     (SELECT id_uzivatel FROM Prispevek
         WHERE datum BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD') AND TO_DATE('2021-12-31', 'YYYY-MM-DD'));
 
+-- Project Part 4: The Last SQL Script
+
 -- [task] two STORED PROCEDURES
--- PROCEDURE to CREATE a new event
+-- PROCEDURE to CREATE a new event (with EXCEPTION for invalid data)
 CREATE OR REPLACE PROCEDURE pridat_akce(
   p_nazev IN Akce.nazev%TYPE,
   p_datum IN Akce.datum%TYPE,
@@ -600,7 +602,7 @@ BEGIN
 END;
 /
 
--- PROCEDURE to demonstrate new data (DBMS_OUTPUT) with use of CURSOR
+-- PROCEDURE to demonstrate new data (shown in DBMS_OUTPUT) with use of CURSOR
 CREATE OR REPLACE PROCEDURE zakladetele_akce AS
 BEGIN 
   DECLARE
@@ -731,7 +733,7 @@ FROM pocet_pratel;
 
 -- [task] one EXPLAIN PLAN
 EXPLAIN PLAN FOR
--- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO from UZIVATEL Cena
+-- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO from UZIVATEL with lastname Cena
 SELECT
   NAZEV     AS NAZEV_KONVERZACE,
   PRIJMENI,
@@ -752,9 +754,9 @@ SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
 CREATE INDEX idx_uzivatel_prijmeni ON UZIVATEL(PRIJMENI);
 
--- EXPLAIN PLAN with INDEX to help optimize
+-- EXPLAIN PLAN with INDEX to help optimize and lower cost
 EXPLAIN PLAN FOR
--- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO from UZIVATEL Cena
+-- ALL ZPRAVY WITHIN EACH KONVERZACE & UZIVATEL INFO from UZIVATEL with lastname Cena (optimaze by INDEX)
 SELECT
   NAZEV     AS NAZEV_KONVERZACE,
   PRIJMENI,
@@ -786,6 +788,7 @@ SELECT uzivatel_id, COUNT(pritel_id) AS pocet_pratel
 FROM Pratelstvi
 GROUP BY uzivatel_id;
 
+-- Show how many friends each user have (students use different INSERT values)
 SELECT * FROM XBIELG00.mv_pocet_pratel;
 SELECT * FROM XMIKYS03.mv_pocet_pratel;
 

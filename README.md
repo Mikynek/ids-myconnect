@@ -1,10 +1,12 @@
-# IDS Project - Relational database
+# IDS Project - Relational Database
 
-## Hodnocení:
+This repository contains a school project focused on implementing a fictional social network in a relational database.
 
-1. část: Datový model (ERD), model případů použití __5/5__
-2. část: SQL skript pro vytvoření objektů schématu databáze __4/5__
-3. část: SQL skript s několika dotazy SELECT __5/5__
-4. část: Poslední SQL skript a obhajoba projektu __?/19__
+## Evaluation:
 
-*Za výsledek obsahující další funkcionalitu či prvky nepožadované explicitně v zadání projektu lze získat další prémiové body.*
+1. part: Data model (ERD), use case model - __5/5__
+2. part: SQL script for creating database schema objects - __4/5__ (error in specialization)
+3. part: SQL script with several SELECT queries - __5/5__
+4. part: Final SQL script and project defense __19/19__
+
+Overall Evaluation: __33/34__
